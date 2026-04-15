@@ -40,11 +40,6 @@ namespace Démo_simple_API.Controllers
         [HttpPost]
         public ActionResult AddProduct(CreateProductRequest p)
         {
-            if (p.Name == "" || p.Price < 0.0m)
-            {
-                return UnprocessableEntity("Erreur dans les données du produit");
-            }
-
             _productService.AddProduct(ProductMapping.ToEntity(p));
             return Ok();
         }

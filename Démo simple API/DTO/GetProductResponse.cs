@@ -1,4 +1,6 @@
-﻿namespace Démo_simple_API.DTO;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Démo_simple_API.DTO;
 
 public class GetProductResponse
 {
