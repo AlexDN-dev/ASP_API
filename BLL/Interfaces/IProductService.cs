@@ -9,5 +9,8 @@ namespace BLL.Interfaces
     {
         List<Product> GetAllProducts();
         Product? GetProductById(int id);
+        void AddProduct(Product p);
+        void RemoveProduct(int id);
+        void UpdateProduct(int id,Product p);
     }
 }

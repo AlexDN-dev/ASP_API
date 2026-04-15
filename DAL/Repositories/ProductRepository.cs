@@ -72,5 +72,49 @@ namespace DAL.Repositories
             return product;
         }
 
+        public void Addproduct(Product p)
+        {
+            string query = "INSERT INTO Products (Name, Price) VALUES (@Name, @Price)";
+            
+            using SqlConnection connection = new SqlConnection(_connectionString);
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                connection.Open();
+                command.Parameters.AddWithValue("@Name", p.Name);
+                command.Parameters.AddWithValue("@Price", p.Price);
+                command.ExecuteNonQuery();
+                connection.Close();
+            }
+        }
+
+        public void RemoveProduct(int id)
+        {
+            string query = "DELETE FROM Products WHERE (Id = @Id)";
+            
+            using SqlConnection connection = new SqlConnection(_connectionString);
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                connection.Open();
+                command.Parameters.AddWithValue("@Id", id);
+                command.ExecuteNonQuery();
+                connection.Close();
+            }
+        }
+
+        public void UpdateProduct(int id, Product p)
+        {
+            string query = "UPDATE Products SET Name = @Name, Price = @Price WHERE @Id = id";
+            
+            using SqlConnection connection = new SqlConnection(_connectionString);
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                connection.Open();
+                command.Parameters.AddWithValue("@Name", p.Name);
+                command.Parameters.AddWithValue("@Price", p.Price);
+                command.Parameters.AddWithValue("@Id", id);
+                command.ExecuteNonQuery();
+                connection.Close();
+            }
+        }
     }
 }

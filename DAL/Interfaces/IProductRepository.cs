@@ -9,5 +9,8 @@ namespace DAL.Interfaces
     {
         List<Product> GetAll();
         Product? GetById(int id);
+        void Addproduct(Product p);
+        void RemoveProduct(int id);
+        void UpdateProduct(int id,Product p);
     }
 }

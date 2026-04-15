@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using BLL.Interfaces;
+using Démo_simple_API.DTO;
+using Démo_simple_API.Mapping;
 using Domain.Entities;
 
 namespace Démo_simple_API.Controllers
@@ -17,23 +19,48 @@ namespace Démo_simple_API.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<Product>> GetAll()
+        public ActionResult<List<GetProductResponse>> GetAll()
         {
-            List<Product> products = _productService.GetAllProducts();
+            IEnumerable<GetProductResponse> products = _productService.GetAllProducts().Select(ProductMapping.ToResponse);
             return Ok(products);
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Product> GetById(int id)
+        public ActionResult<GetProductResponse> GetById(int id)
         {
-            var product = _productService.GetProductById(id);
+            Product product = _productService.GetProductById(id);
 
             if (product == null)
             {
                 return NotFound("Produit non trouvé");
             }
+            return Ok(ProductMapping.ToResponse(product));
+        }
 
-            return Ok(product);
+        [HttpPost]
+        public ActionResult AddProduct(CreateProductRequest p)
+        {
+            if (p.Name == "" || p.Price < 0.0m)
+            {
+                return UnprocessableEntity("Erreur dans les données du produit");
+            }
+
+            _productService.AddProduct(ProductMapping.ToEntity(p));
+            return Ok();
+        }
+
+        [HttpDelete("{id}")]
+        public ActionResult RemoveProduct(int id)
+        {
+            _productService.RemoveProduct(id);
+            return Ok("Le produit à bien été supprimé");
+        }
+
+        [HttpPut("{id}")]
+        public ActionResult UpdateProduct(int id,UpdateProductRequest p)
+        {
+            _productService.UpdateProduct(id, ProductMapping.ToEntity(p));
+            return Ok("Le produit à bien été mis à jour.");
         }
     }
 }
